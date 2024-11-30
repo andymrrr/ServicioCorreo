@@ -6,7 +6,12 @@ using System.Threading.Tasks;
 
 namespace ServicioCorreo.Dal.Modelo
 {
-    internal class Plantilla
+    public class Plantilla
     {
+        public int Id { get; set; } 
+        public string Nombre { get; set; } 
+        public string ContenidoHtml { get; set; } 
+        public DateTime FechaCreacion { get; set; } 
+        public DateTime? FechaUltimaModificacion { get; set; }
     }
 }

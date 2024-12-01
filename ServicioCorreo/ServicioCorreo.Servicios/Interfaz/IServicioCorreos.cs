@@ -8,6 +8,6 @@ namespace ServicioCorreo.Servicios.Interffaz
 {
     public interface IServicioCorreos
     {
-        Task EnviarCorreoAsync(string destinatario, string asunto, string cuerpoHtml);
+        Task<bool> EnviarCorreoAsync(string destinatario, string asunto, string cuerpoHtml);
     }
 }

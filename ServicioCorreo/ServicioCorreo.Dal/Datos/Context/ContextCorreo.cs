@@ -11,8 +11,8 @@ namespace ServicioCorreo.Dal.Datos.Context
         {
         }
 
-        public DbSet<Log> Logs{ get; set; } // Tabla para logs de correos
-        public DbSet<Plantilla> Plantillas { get; set; } // Tabla para plantillas de correo
+        public DbSet<Log> Logs{ get; set; } 
+        public DbSet<Plantilla> Plantillas { get; set; } 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

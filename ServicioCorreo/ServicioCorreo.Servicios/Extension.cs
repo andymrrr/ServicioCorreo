@@ -12,7 +12,10 @@ namespace ServicioCorreo.Servicios
         public static IServiceCollection AddServicio(this IServiceCollection servicio, IConfiguration configuracion)
         {
 
-            servicio.Configure<ConfiguracionCorreo>(configuracion.GetSection("ConfiguracionCorreo"));
+            servicio.Configure<ConfiguracionCorreo>(options =>
+            {
+                configuracion.GetSection("ConfiguracionCorreo").Bind(options);
+            });
             servicio.AddScoped<IServicioCorreos, ServicioCorreos>();
 
 

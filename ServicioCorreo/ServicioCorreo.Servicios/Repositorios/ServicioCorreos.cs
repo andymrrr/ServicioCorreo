@@ -3,6 +3,7 @@ using System.Net;
 using ServicioCorreo.Servicios.Modelo;
 using Microsoft.Extensions.Options;
 using ServicioCorreo.Servicios.Interffaz;
+using Microsoft.Extensions.Configuration;
 
 namespace ServicioCorreo.Servicios.Repositorios
 {
@@ -14,33 +15,45 @@ namespace ServicioCorreo.Servicios.Repositorios
         {
             _config = config.Value;
         }
-
-        public async Task EnviarCorreoAsync(string destinatario, string asunto, string cuerpoHtml)
+        public async Task<bool> EnviarCorreoAsync(string destinatario, string asunto, string cuerpoHtml)
         {
-            using (var smtpClient = new SmtpClient(_config.ServidorSmtp, _config.Puerto))
+            try
             {
-                smtpClient.Credentials = new NetworkCredential(_config.CorreoRemitente, _config.Contraseña);
-                smtpClient.EnableSsl = _config.UsarSsl;
-
-                var correo = new MailMessage
+                // Crear el cliente SMTP
+                using (var smtpClient = new SmtpClient(_config.ServidorSmtp, _config.Puerto))
                 {
-                    From = new MailAddress(_config.CorreoRemitente, _config.NombreRemitente),
-                    Subject = asunto,
-                    Body = cuerpoHtml,
-                    IsBodyHtml = true // Indica que el cuerpo es HTML
-                };
+                    // Configuración del cliente SMTP
+                    smtpClient.Credentials = new NetworkCredential(_config.CorreoRemitente, _config.Contraseña);
+                    smtpClient.EnableSsl = _config.UsarSsl;
 
-                correo.To.Add(destinatario);
+                    // Crear el correo
+                    var correo = new MailMessage
+                    {
+                        From = new MailAddress(_config.CorreoRemitente, _config.NombreRemitente),
+                        Subject = asunto,
+                        Body = cuerpoHtml,
+                        IsBodyHtml = true
+                    };
 
-                try
-                {
+                    // Agregar el destinatario
+                    correo.To.Add(destinatario);
+
+                    // Enviar el correo de manera asíncrona
                     await smtpClient.SendMailAsync(correo);
-                }
-                catch (Exception ex)
-                {
-                    throw new InvalidOperationException("Error al enviar el correo", ex);
+
+                    // Si todo salió bien, retornar true
+                    return true;
                 }
             }
+            catch (Exception ex)
+            {
+                // Aquí puedes registrar el error si lo deseas
+                Console.WriteLine($"Error al enviar correo: {ex.Message}");
+
+                // Si hubo un error, retornar false
+                return false;
+            }
         }
+
     }
 }

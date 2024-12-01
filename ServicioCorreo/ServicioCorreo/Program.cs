@@ -1,4 +1,8 @@
+using Microsoft.EntityFrameworkCore;
+using ServicioCorreo.Aplicacion;
+using ServicioCorreo.Dal;
 using ServicioCorreo.Dal.Datos.Context;
+using ServicioCorreo.Servicios;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,7 +12,10 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-
+// Configuración de las capas adicionales (verifica que los servicios sean scoped o transient)
+builder.Services.AddServicioDatos(builder.Configuration);
+builder.Services.AddServicio(builder.Configuration);
+builder.Services.AddServicioAplicacion(builder.Configuration);
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -30,7 +37,8 @@ using (var scope = app.Services.CreateScope())
     try
     {
         var context = services.GetRequiredService<ContextCorreo>();
-
+        await context.Database.MigrateAsync();
+        await ContextCorreoDatos.CargardatosAsincronos(context, loggerFactory);
     }
     catch (Exception ex)
     {

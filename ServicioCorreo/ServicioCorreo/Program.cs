@@ -38,7 +38,7 @@ using (var scope = app.Services.CreateScope())
     {
         var context = services.GetRequiredService<ContextCorreo>();
         await context.Database.MigrateAsync();
-        await ContextCorreoDatos.CargardatosAsincronos(context, loggerFactory);
+        //await ContextCorreoDatos.CargardatosAsincronos(context, loggerFactory);
     }
     catch (Exception ex)
     {

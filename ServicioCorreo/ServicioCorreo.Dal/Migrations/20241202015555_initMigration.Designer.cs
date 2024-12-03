@@ -12,7 +12,7 @@ using ServicioCorreo.Dal.Datos.Context;
 namespace ServicioCorreo.Dal.Migrations
 {
     [DbContext(typeof(ContextCorreo))]
-    [Migration("20241130225214_initMigration")]
+    [Migration("20241202015555_initMigration")]
     partial class initMigration
     {
         /// <inheritdoc />
@@ -66,7 +66,14 @@ namespace ServicioCorreo.Dal.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<bool>("Activo")
+                        .HasColumnType("bit");
+
                     b.Property<string>("ContenidoHtml")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Descripcion")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -80,6 +87,10 @@ namespace ServicioCorreo.Dal.Migrations
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("ParametrosEsperados")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 

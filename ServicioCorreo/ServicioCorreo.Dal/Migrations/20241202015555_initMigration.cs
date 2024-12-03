@@ -36,8 +36,11 @@ namespace ServicioCorreo.Dal.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Nombre = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     ContenidoHtml = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ParametrosEsperados = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     FechaCreacion = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    FechaUltimaModificacion = table.Column<DateTime>(type: "datetime2", nullable: true)
+                    FechaUltimaModificacion = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Descripcion = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Activo = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {

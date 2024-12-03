@@ -72,7 +72,40 @@ Define la conexión a tu base de datos para almacenar plantillas y otros datos:
 }
 ```
 
+## Migración y Plantillas Prediseñadas
+
+Como parte del proceso de migración, se crean automáticamente las tablas necesarias para el funcionamiento del sistema, junto con una serie de plantillas prediseñadas que facilitan la configuración inicial.
+
+### Tablas Generadas
+
+1. **Tabla de Logs**: Esta tabla registra todas las actividades importantes del sistema, permitiendo un seguimiento detallado de las acciones y eventos ocurridos.
+2. **Tabla de Plantillas**: Se crea una tabla que contiene las plantillas prediseñadas, las cuales se utilizan para la configuración inicial de la aplicación.
+
+### Plantillas Prediseñadas
+
+Durante la migración, también se generan una serie de plantillas prediseñadas que se insertan automáticamente en la base de datos. Estas plantillas incluyen:
+
+| Nombre                                    | Descripción                                                                           |
+| ----------------------------------------- | ------------------------------------------------------------------------------------- |
+| Plantilla Registro Usuario                | Plantilla para notificar el registro de un usuario.                                   |
+| Plantilla Factura                         | Plantilla para la generación de facturas.                                             |
+| Plantilla Restablecimiento de Contraseña  | Plantilla para notificar y gestionar el restablecimiento de contraseña.               |
+| Confirmación de Registro de Cuenta        | Plantilla de confirmación de registro para nuevos usuarios.                           |
+| Notificación de Cambio de Contraseña      | Plantilla para notificar al usuario que su contraseña ha sido cambiada.               |
+| Notificación de Pago Exitoso              | Plantilla para notificar al usuario que su pago ha sido procesado exitosamente.       |
+| Recordatorio de Renovación de Suscripción | Plantilla de recordatorio de renovación de suscripción para los usuarios.             |
+| Notificación de Actualización de Perfil   | Plantilla de notificación para informar al usuario que su perfil ha sido actualizado. |
+| Notificación de Suspensión de Cuenta      | Plantilla para notificar al usuario que su cuenta ha sido suspendida.                 |
+| Notificación de Descuento en Compra       | Plantilla para notificar al usuario sobre un descuento en su próxima compra.          |
+| Recordatorio de Factura Pendiente         | Plantilla para notificar al usuario sobre una factura pendiente de pago.              |
+
+### ¿Cómo se aplican las migraciones?
+
+Al ejecutar las migraciones, tanto las tablas como las plantillas prediseñadas se crean de manera automática, asegurando que la aplicación esté lista para su uso desde el inicio.
+
 ## Uso
+
+### Propiedades del Comando
 
 El comando principal es **EnviarCorreosComando**, que permite enviar correos electrónicos personalizados.
 
@@ -84,3 +117,5 @@ El comando principal es **EnviarCorreosComando**, que permite enviar correos ele
 | CuerpoHtmlPersonalizado | string                           | No        | Contenido HTML personalizado en caso de no usar una plantilla.             |
 | Parametros              | Dictionary<string, string>       | No        | Valores dinámicos que se sustituyen en la plantilla o el cuerpo HTML.      |
 | Items                   | List<Dictionary<string, object>> | No        | Lista de elementos dinámicos (usualmente para tablas o listas detalladas). |
+
+## Ejemplos via PostMan

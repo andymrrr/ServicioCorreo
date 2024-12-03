@@ -84,20 +84,19 @@ Como parte del proceso de migración, se crean automáticamente las tablas neces
 ### Plantillas Prediseñadas
 
 Durante la migración, también se generan una serie de plantillas prediseñadas que se insertan automáticamente en la base de datos. Estas plantillas incluyen:
-
-| Nombre                                    | Descripción                                                                           |
-| ----------------------------------------- | ------------------------------------------------------------------------------------- |
-| Plantilla Registro Usuario                | Plantilla para notificar el registro de un usuario.                                   |
-| Plantilla Factura                         | Plantilla para la generación de facturas.                                             |
-| Plantilla Restablecimiento de Contraseña  | Plantilla para notificar y gestionar el restablecimiento de contraseña.               |
-| Confirmación de Registro de Cuenta        | Plantilla de confirmación de registro para nuevos usuarios.                           |
-| Notificación de Cambio de Contraseña      | Plantilla para notificar al usuario que su contraseña ha sido cambiada.               |
-| Notificación de Pago Exitoso              | Plantilla para notificar al usuario que su pago ha sido procesado exitosamente.       |
-| Recordatorio de Renovación de Suscripción | Plantilla de recordatorio de renovación de suscripción para los usuarios.             |
-| Notificación de Actualización de Perfil   | Plantilla de notificación para informar al usuario que su perfil ha sido actualizado. |
-| Notificación de Suspensión de Cuenta      | Plantilla para notificar al usuario que su cuenta ha sido suspendida.                 |
-| Notificación de Descuento en Compra       | Plantilla para notificar al usuario sobre un descuento en su próxima compra.          |
-| Recordatorio de Factura Pendiente         | Plantilla para notificar al usuario sobre una factura pendiente de pago.              |
+| Nombre | Descripción | Parámetros Esperados |
+|-------------------------------------|-----------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------|
+| Plantilla Registro Usuario | Plantilla para notificar el registro de un usuario. | ["NombreUsuario", "NombreCompleto", "CorreoElectronico", "FechaRegistro", "Estado", "CorreoSoporte"] |
+| Plantilla Factura | Plantilla para la generación de facturas. | ["LogoUrl", "NombreCliente", "NombreEmpresa", "Fecha", "NumeroFactura", "Items", "Total", "CorreoEmpresa", "Estado"] |
+| Plantilla Restablecimiento de Contraseña | Plantilla para notificar y gestionar el restablecimiento de contraseña. | ["NombreUsuario", "UrlRestablecimiento", "FechaExpiracion", "CorreoSoporte"] |
+| Confirmación de Registro de Cuenta | Plantilla de confirmación de registro para nuevos usuarios. | ["NombreUsuario", "UrlConfirmacion", "FechaExpiracion", "CorreoSoporte"] |
+| Notificación de Cambio de Contraseña | Plantilla para notificar al usuario que su contraseña ha sido cambiada. | ["NombreUsuario", "FechaCambio", "CorreoSoporte"] |
+| Notificación de Pago Exitoso | Plantilla para notificar al usuario que su pago ha sido procesado exitosamente. | ["NombreUsuario", "Monto", "NumeroFactura", "FechaPago", "CorreoSoporte"] |
+| Recordatorio de Renovación de Suscripción | Plantilla de recordatorio de renovación de suscripción para los usuarios. | ["NombreUsuario", "FechaVencimiento", "UrlRenovacion", "CorreoSoporte"] |
+| Notificación de Actualización de Perfil | Plantilla de notificación para informar al usuario que su perfil ha sido actualizado. | ["NombreUsuario", "FechaActualizacion", "CorreoSoporte"] |
+| Notificación de Suspensión de Cuenta | Plantilla para notificar al usuario que su cuenta ha sido suspendida. | ["NombreUsuario", "FechaSuspension", "MotivoSuspension", "CorreoSoporte"] |
+| Notificación de Descuento en Compra | Plantilla para notificar al usuario sobre un descuento en su próxima compra. | ["NombreUsuario", "DescuentoPorcentaje", "FechaVencimiento", "UrlCompra", "CorreoSoporte"] |
+| Recordatorio de Factura Pendiente | Plantilla para notificar al usuario sobre una factura pendiente de pago. | ["NombreUsuario", "MontoFactura", "FechaVencimiento", "UrlPago", "CorreoSoporte"] |
 
 ### ¿Cómo se aplican las migraciones?
 

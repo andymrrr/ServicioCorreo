@@ -119,7 +119,7 @@ El comando principal es **EnviarCorreosComando**, que permite enviar correos ele
 
 ## Endpoints de la API
 
-La API proporciona dos endpoints principales para la gestión de plantillas y el envío de correos. A continuación, se detalla su funcionalidad y uso.
+La API proporciona dos endpoints principales para la gestión de plantillas. A continuación, se detalla su funcionalidad y uso.
 
 ---
 
@@ -166,3 +166,61 @@ El endpoint devuelve un objeto con la siguiente estructura:
 ```
 
 Este resultado no solo proporciona los datos de las plantillas disponibles, sino que también muestra cómo luce el request para enviar un correo usando una plantilla específica.
+
+### 2. Enviar Correo
+
+**Endpoint:** /api/Correo/Enviar
+**Método:** POST
+
+Este endpoint permite enviar correos electrónicos personalizados basados en las plantillas configuradas en el sistema.
+
+**Request**
+El cuerpo del request debe incluir los parámetros necesarios para personalizar la plantilla seleccionada. Ejemplo de un request típico:
+
+```json
+{
+  "idPlantilla": 1,
+  "parametros": {
+    "NombreUsuario": "Juan Pérez",
+    "NombreCompleto": "Juan Alberto Pérez García",
+    "CorreoElectronico": "juan.perez@example.com",
+    "FechaRegistro": "2024-12-03",
+    "Estado": "Activo",
+    "CorreoSoporte": "soporte@example.com"
+  },
+  "destinatario": "juan.perez@example.com",
+  "asunto": "Correo basado en Plantilla Registro Usuario"
+}
+```
+
+**Respuesta**
+El endpoint devuelve un valor booleano que indica el resultado de la operación:
+
+**true:** El correo se envió correctamente.
+**false:** Ocurrió un error durante el envío.
+
+## Ejemplo de Flujo
+
+### Consultar Plantillas Disponibles:
+
+Usa el endpoint **/api/Plantilla/paginacion** para buscar una plantilla por nombre o ID.
+
+### Enviar Correo con una Plantilla:
+
+Usa el endpoint **/api/Correo/Enviar**, proporcionando el idPlantilla y los parámetros necesarios para personalizar el correo.
+
+```json
+{
+  "idPlantilla": 1,
+  "parametros": {
+    "NombreUsuario": "Juan Pérez",
+    "NombreCompleto": "Juan Alberto Pérez García",
+    "CorreoElectronico": "juan.perez@example.com",
+    "FechaRegistro": "2024-12-03",
+    "Estado": "Activo",
+    "CorreoSoporte": "soporte@example.com"
+  },
+  "destinatario": "juan.perez@example.com",
+  "asunto": "Correo basado en Plantilla Registro Usuario"
+}
+```

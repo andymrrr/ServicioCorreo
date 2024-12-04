@@ -15,4 +15,8 @@
     <ProjectReference Include="..\ServicioCorreo.Servicios\ServicioCorreo.Servicios.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Funcionalidad\Plantilla\NewFolder\" />
+  </ItemGroup>
+
 </Project>

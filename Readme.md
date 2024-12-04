@@ -117,4 +117,52 @@ El comando principal es **EnviarCorreosComando**, que permite enviar correos ele
 | Parametros              | Dictionary<string, string>       | No        | Valores dinámicos que se sustituyen en la plantilla o el cuerpo HTML.      |
 | Items                   | List<Dictionary<string, object>> | No        | Lista de elementos dinámicos (usualmente para tablas o listas detalladas). |
 
-## Ejemplos via PostMan
+## Endpoints de la API
+
+La API proporciona dos endpoints principales para la gestión de plantillas y el envío de correos. A continuación, se detalla su funcionalidad y uso.
+
+---
+
+### 1. Listar Plantillas con Paginación
+
+**Endpoint**: `/api/Plantilla/paginacion`  
+**Método**: `GET`
+
+Este endpoint lista las plantillas disponibles en el sistema. Permite realizar búsquedas de manera flexible a través de los siguientes parámetros:
+
+- **Búsqueda por Nombre**:
+  - Ejemplo: `/api/Plantilla/paginacion?busqueda=usuario`
+- **Búsqueda por ID**:
+  - Ejemplo: `/api/Plantilla/paginacion?PlantillaId=1`
+
+#### Respuesta
+
+El endpoint devuelve un objeto con la siguiente estructura:
+
+```json
+{
+  "totalRegistros": 1,
+  "paginaActual": 1,
+  "cantidadRegistroPorPagina": 10,
+  "datos": [
+    {
+      "destinatario": null,
+      "asunto": "Correo basado en Plantilla Registro Usuario",
+      "idPlantilla": 1,
+      "cuerpoHtmlPersonalizado": null,
+      "parametros": {
+        "NombreUsuario": "",
+        "NombreCompleto": "",
+        "CorreoElectronico": "",
+        "FechaRegistro": "",
+        "Estado": "",
+        "CorreoSoporte": ""
+      },
+      "items": []
+    }
+  ],
+  "totalPaginas": 1
+}
+```
+
+Este resultado no solo proporciona los datos de las plantillas disponibles, sino que también muestra cómo luce el request para enviar un correo usando una plantilla específica.

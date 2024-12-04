@@ -1,8 +1,8 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using ServicioCorreo.Aplicacion.Funcionalidad.Correos.Comando.EnviarCorreos;
-using ServicioCorreo.Aplicacion.Funcionalidad.Plantilla.Consultas.ObtenerPlantillasConParametros;
+using ServicioCorreo.Aplicacion.Funcionalidad.Plantilla.Consultas.PaginacionPlantillas;
 using ServicioCorreo.Aplicacion.Funcionalidad.Plantilla.Vm;
+using ServicioCorreo.Dal.Datos.Paginacion.Modelo;
 using System.Net;
 
 namespace ServicioCorreo.Controllers
@@ -17,13 +17,14 @@ namespace ServicioCorreo.Controllers
             _mediador = mediador;
         }
 
-        [HttpGet("ObtenerPlantillaConParametro", Name = "ObtenerPlantillaConParametro")]
-        [ProducesResponseType(typeof(List<PlantillaVm>), (int)(HttpStatusCode.OK))]
-        public async Task<List<PlantillaVm>> ObtenerPlantillaConParametro()
+       
+        [HttpGet("paginacion", Name = "PaginacionPlantilla")]
+        [ProducesResponseType(typeof(PaginacionVm<PlantillaVm>), (int)(HttpStatusCode.OK))]
+        public async Task<ActionResult<PaginacionVm<PlantillaVm>>> PaginacionPlantilla([FromQuery] PaginacionPlantillasConsulta consulta)
         {
-            var plantilla = new ObtenerPlantillasConParametrosConsulta();
-            return await _mediador.Send(plantilla);
-        }
 
+            var paginacion = await _mediador.Send(consulta);
+            return Ok(paginacion);
+        }
     }
 }

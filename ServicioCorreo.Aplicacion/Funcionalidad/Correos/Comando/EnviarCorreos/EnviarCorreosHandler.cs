@@ -1,17 +1,20 @@
 ﻿using MediatR;
 using ServicioCorreo.Aplicacion.Funcionalidad.Correos.Comando.EnviarCorreos;
 using ServicioCorreo.Dal.Datos.Context;
+using ServicioCorreo.Dal.Datos.Interfaz;
+using ServicioCorreo.Dal.Modelo;
 using ServicioCorreo.Dal.Utilitario.Correo;
 using ServicioCorreo.Servicios.Interffaz;
+using System.Text.RegularExpressions;
 
 
 public class EnviarCorreosComandoHandler : IRequestHandler<EnviarCorreosComando, bool>
 {
     private readonly IServicioCorreos _servicioCorreos;
-    private readonly ContextCorreo _context;
+    private readonly ICorreoUoW _context;
     private readonly PlantillaProcesador _plantillaProcesador;
 
-    public EnviarCorreosComandoHandler(IServicioCorreos servicioCorreos, ContextCorreo context, PlantillaProcesador plantillaProcesador)
+    public EnviarCorreosComandoHandler(IServicioCorreos servicioCorreos, ICorreoUoW context, PlantillaProcesador plantillaProcesador)
     {
         _servicioCorreos = servicioCorreos;
         _context = context;
@@ -25,9 +28,9 @@ public class EnviarCorreosComandoHandler : IRequestHandler<EnviarCorreosComando,
         // Obtener la plantilla o el contenido personalizado
         if (request.IdPlantilla.HasValue)
         {
-            var plantilla = await _context.Plantillas.FindAsync(request.IdPlantilla.Value);
+            var plantilla = await _context.Plantilla.BuscarPorIdAsincrono(request.IdPlantilla!.Value!);
 
-            if (plantilla == null)
+            if (plantilla is null)
             {
                 throw new KeyNotFoundException($"La plantilla con ID {request.IdPlantilla} no fue encontrada.");
             }
@@ -43,18 +46,17 @@ public class EnviarCorreosComandoHandler : IRequestHandler<EnviarCorreosComando,
             throw new ArgumentException("Debe especificar una plantilla o un cuerpo HTML personalizado.");
         }
 
-        // Reemplazar parámetros generales
         if (request.Parametros != null)
         {
             cuerpoHtml = _plantillaProcesador.ReemplazarParametros(cuerpoHtml, request.Parametros);
         }
 
-        // Procesar {{#Items}} ... {{/Items}}
+        
         if (request.Items != null && request.Items.Any())
         {
             // Detectar y extraer la sección {{#Items}} ... {{/Items}}
             var itemsPattern = @"{{#Items}}(.*?){{/Items}}";
-            var itemsMatch = System.Text.RegularExpressions.Regex.Match(cuerpoHtml, itemsPattern, System.Text.RegularExpressions.RegexOptions.Singleline);
+            var itemsMatch = Regex.Match(cuerpoHtml, itemsPattern, RegexOptions.Singleline);
 
             if (itemsMatch.Success)
             {
@@ -79,18 +81,38 @@ public class EnviarCorreosComandoHandler : IRequestHandler<EnviarCorreosComando,
         {
             // Si no hay items, eliminar la sección {{#Items}} ... {{/Items}}
             var itemsPattern = @"{{#Items}}(.*?){{/Items}}";
-            cuerpoHtml = System.Text.RegularExpressions.Regex.Replace(cuerpoHtml, itemsPattern, string.Empty, System.Text.RegularExpressions.RegexOptions.Singleline);
+            cuerpoHtml = Regex.Replace(cuerpoHtml, itemsPattern, string.Empty,RegexOptions.Singleline);
         }
 
         try
         {
-            await _servicioCorreos.EnviarCorreoAsync(request.Destinatario, request.Asunto, cuerpoHtml);
+            await _servicioCorreos.EnviarCorreoAsync(request.Destinatario, request.Asunto, cuerpoHtml,request.Prioridad,request.Adjuntos);
+            var log = new Log
+            {
+                Asunto = request.Asunto,
+                Destinatario = request.Destinatario,
+                Error = "N/A",
+                Exito = true,
+                FechaEnvio = DateTime.Now,
+            };
+            await _context.Log.AgregarAsincrono(log);
+
+            await _context.GuardarCambiosAsync();
             return true;
         }
         catch (Exception ex)
         {
-            // Log del error
-            Console.WriteLine($"Error al enviar correo: {ex.Message}");
+            var log = new Log
+            {
+                Asunto = request.Asunto,
+                Destinatario = request.Destinatario,
+                Error = ex.Message,
+                Exito = true,
+                FechaEnvio = DateTime.Now,
+            };
+            await _context.Log.AgregarAsincrono(log);
+
+            await _context.GuardarCambiosAsync();
             return false;
         }
     }

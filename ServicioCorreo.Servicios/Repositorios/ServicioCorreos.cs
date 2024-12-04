@@ -7,7 +7,7 @@ using Microsoft.Extensions.Configuration;
 
 namespace ServicioCorreo.Servicios.Repositorios
 {
-    public class ServicioCorreos  : IServicioCorreos
+    public class ServicioCorreos : IServicioCorreos
     {
         private readonly ConfiguracionCorreo _config;
 
@@ -15,7 +15,13 @@ namespace ServicioCorreo.Servicios.Repositorios
         {
             _config = config.Value;
         }
-        public async Task<bool> EnviarCorreoAsync(string destinatario, string asunto, string cuerpoHtml)
+
+        public async Task<bool> EnviarCorreoAsync(
+            string destinatario,
+            string asunto,
+            string cuerpoHtml,
+            MailPriority prioridad = MailPriority.Normal,
+            IEnumerable<string>? rutasAdjuntos = null)
         {
             try
             {
@@ -32,11 +38,24 @@ namespace ServicioCorreo.Servicios.Repositorios
                         From = new MailAddress(_config.CorreoRemitente, _config.NombreRemitente),
                         Subject = asunto,
                         Body = cuerpoHtml,
-                        IsBodyHtml = true
+                        IsBodyHtml = true,
+                        Priority = prioridad
                     };
 
                     // Agregar el destinatario
                     correo.To.Add(destinatario);
+
+                    // Agregar los adjuntos si se proporcionan
+                    if (rutasAdjuntos != null)
+                    {
+                        foreach (var ruta in rutasAdjuntos)
+                        {
+                            if (!string.IsNullOrEmpty(ruta))
+                            {
+                                correo.Attachments.Add(new Attachment(ruta));
+                            }
+                        }
+                    }
 
                     // Enviar el correo de manera asíncrona
                     await smtpClient.SendMailAsync(correo);
@@ -54,6 +73,5 @@ namespace ServicioCorreo.Servicios.Repositorios
                 return false;
             }
         }
-
     }
 }

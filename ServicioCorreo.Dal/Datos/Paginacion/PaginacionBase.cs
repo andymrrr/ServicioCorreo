@@ -25,13 +25,13 @@ namespace ServicioCorreo.Dal.Datos.Paginacion
         protected void AgregarOrdenarPor(Expression<Func<T, object>> ordenarExpresion)
         {
             OrdenarPor = ordenarExpresion;
-            OrdenarDescendente = false; // Se supone que al agregar un criterio de ordenación, es ascendente
+            OrdenarDescendente = false; 
         }
 
         protected void AgregarOrdenarDescendiente(Expression<Func<T, object>> ordenarExpresion)
         {
             OrdenarPor = ordenarExpresion;
-            OrdenarDescendente = true; // Al agregar este criterio, se establece como descendente
+            OrdenarDescendente = true; 
         }
 
         protected void AplicarPaginacion(int pagina, int cantidadRegistro)

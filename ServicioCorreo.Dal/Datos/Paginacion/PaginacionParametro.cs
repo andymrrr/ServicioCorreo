@@ -8,7 +8,7 @@ namespace ServicioCorreo.Dal.Datos.Paginacion
 
         public const int CantidadRegistroPorPaginaMaximo = 50; // Tamaño máximo de la página
 
-        private int _tamanoPagina = 10; // Valor por defecto inicial
+        private int _tamanoPagina = 10; 
         public int CantidadRegistroPorPagina
         {
             get => _tamanoPagina;
@@ -16,13 +16,13 @@ namespace ServicioCorreo.Dal.Datos.Paginacion
             {
                 if (value <= 0)
                 {
-                    _tamanoPagina = 10; // Asignar el valor por defecto si se establece en 0 o menor
+                    _tamanoPagina = 10; 
                 }
                 else
                 {
                     _tamanoPagina = value > CantidadRegistroPorPaginaMaximo
                         ? CantidadRegistroPorPaginaMaximo
-                        : value; // Limitar el tamaño de la página al máximo permitido
+                        : value; 
                 }
             }
         }

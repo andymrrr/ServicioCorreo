@@ -1,5 +1,5 @@
-appsettings.json
-appsettings.*.json
+ServicioCorreo/appsettings.json
+ServicioCorreo/appsettings.*.json
 # User-specific files
 *.suo
 *.user

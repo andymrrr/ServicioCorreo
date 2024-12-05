@@ -63,23 +63,20 @@ public class EnviarCorreosComandoHandler : IRequestHandler<EnviarCorreosComando,
                 var itemTemplate = itemsMatch.Groups[1].Value;
                 var renderedItems = request.Items.Select(item =>
                 {
-                    // Convertir el Dictionary<string, object> en Dictionary<string, string>
                     var itemStringDictionary = item.ToDictionary(
                         kvp => kvp.Key,
                         kvp => kvp.Value?.ToString() ?? string.Empty
                     );
 
-                    // Reemplazar los parámetros del template del item
                     return _plantillaProcesador.ReemplazarParametros(itemTemplate, itemStringDictionary);
                 });
 
-                // Reemplazar el bloque {{#Items}} ... {{/Items}} en el HTML final
                 cuerpoHtml = cuerpoHtml.Replace(itemsMatch.Value, string.Join("", renderedItems));
             }
         }
         else
         {
-            // Si no hay items, eliminar la sección {{#Items}} ... {{/Items}}
+            
             var itemsPattern = @"{{#Items}}(.*?){{/Items}}";
             cuerpoHtml = Regex.Replace(cuerpoHtml, itemsPattern, string.Empty,RegexOptions.Singleline);
         }

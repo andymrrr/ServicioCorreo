@@ -24,7 +24,7 @@ ServicioCorreo facilita la integración de funcionalidades de envío de correos 
 1. Clona este repositorio:
 
 ```
-    git clone https://github.com/tu-repositorio/ServicioCorreo.git
+    git clone https://github.com/andymrrr/ServicioCorreo.git
 ```
 
 2.  Navega al directorio del proyecto:

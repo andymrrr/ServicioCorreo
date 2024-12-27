@@ -32,7 +32,7 @@ namespace ServicioCorreo.Servicios.Repositorios
                     smtpClient.Credentials = new NetworkCredential(_config.CorreoRemitente, _config.Contraseña);
                     smtpClient.EnableSsl = _config.UsarSsl;
 
-                    // Crear el correo
+                  
                     var correo = new MailMessage
                     {
                         From = new MailAddress(_config.CorreoRemitente, _config.NombreRemitente),
@@ -42,10 +42,10 @@ namespace ServicioCorreo.Servicios.Repositorios
                         Priority = prioridad
                     };
 
-                    // Agregar el destinatario
+                    
                     correo.To.Add(destinatario);
 
-                    // Agregar los adjuntos si se proporcionan
+                   
                     if (rutasAdjuntos != null)
                     {
                         foreach (var ruta in rutasAdjuntos)
@@ -57,10 +57,9 @@ namespace ServicioCorreo.Servicios.Repositorios
                         }
                     }
 
-                    // Enviar el correo de manera asíncrona
+                 
                     await smtpClient.SendMailAsync(correo);
 
-                    // Si todo salió bien, retornar true
                     return true;
                 }
             }

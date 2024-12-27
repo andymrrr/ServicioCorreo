@@ -66,10 +66,7 @@ namespace ServicioCorreo.Servicios.Repositorios
             }
             catch (Exception ex)
             {
-                // Aquí puedes registrar el error si lo deseas
-                Console.WriteLine($"Error al enviar correo: {ex.Message}");
-
-                // Si hubo un error, retornar false
+                
                 return false;
             }
         }
